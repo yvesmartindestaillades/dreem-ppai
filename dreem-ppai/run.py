@@ -16,7 +16,6 @@ from sanity_check import Sanity_check
 
 from get_info import echo_attributes_samples, echo_attributes_library
 from templates import TemplateGenerator
-from util import get_random_string
 import rnastructure, poisson
 import pandas as pd
 import numpy as np
@@ -80,7 +79,11 @@ def add_library(config, df):
     else:
         new_df = pd.DataFrame()
         assert len(df['construct'].unique()) == len(df), 'constructs are not unique'
-        for _, g in tqdm(df_lib.groupby('construct'), total=len(df_lib['construct'].unique()),desc='constructs'):
+        if config['verbose']:
+            iter_fun = lambda x: tqdm(x.groupby('construct'),  total=len(df_lib['construct'].unique()),desc='constructs')
+        else:
+            iter_fun = lambda x: x.groupby('construct')
+        for idx, g in iter_fun(df_lib):
             one_full_construct = False
             for _, row in g.iterrows():
                 if row['construct'] not in df['construct'].tolist():
@@ -97,6 +100,7 @@ def add_library(config, df):
                     if not one_full_construct:
                         one_full_construct = True
                         row['section'] = 'full'
+                        row['section_start'], row['section_end'] = 1, len(row['sequence'])
                 else:
                     for c in ['sequence']+[col for col in df.columns.tolist() if (col != 'num_of_mutations' and type(df[col].iloc[0]) == list)]:
                         row[c] = row[c][int(row['section_start']-1):int(row['section_end'])]
@@ -104,6 +108,8 @@ def add_library(config, df):
                             row['section'] = '{} - {}'.format(row['section_start'], row['section_end'])
                 new_df = pd.concat([new_df, pd.DataFrame(row).T])
         df = new_df.reset_index(drop=True)
+        df['section_start'] = df['section_start'].apply(lambda x: int(x-1))
+        df['section_end'] = df['section_end'].apply(lambda x:  int(x-1))     
         return df
 
 def add_rnastructure(config, df,s):
@@ -126,23 +132,31 @@ def add_rnastructure(config, df,s):
                     p[x], q[x] = None, None
     """
     rna = rnastructure.RNAstructure(config)
-    for idx, mh in tqdm(df.iterrows(), total=len(df), desc='RNAstructure', postfix=s):
+    if config['verbose']:
+        iter_fun = lambda x: tqdm(x.iterrows(), total=len(x), desc='RNAstructure prediction', postfix=s)
+    else:
+        iter_fun = lambda x: x.iterrows()
+    for idx, mh in iter_fun(df):
         rna_pred[idx] = rna.run(s,mh)
     df_rna = pd.DataFrame.from_dict(rna_pred, orient='index')
     df = pd.concat([df, df_rna], axis=1)
     return df
 
-def add_poisson(df):
+def add_poisson(config,df,s):
     ci = {}
     df.reset_index(inplace=True)
-    for idx, mh in tqdm(df.iterrows(), total=len(df), desc='Poisson intervals', postfix=s):
+    if config['verbose']:
+        iter_fun = lambda x: tqdm(x.iterrows(), total=len(x), desc='Poisson intervals', postfix=s)
+    else:
+        iter_fun = lambda x: x.iterrows()
+    for idx, mh in iter_fun(df):
         ci[idx] = poisson.compute_conf_interval(info_bases=mh.info_bases, mut_bases=mh.mut_bases)
     df_ci = pd.DataFrame.from_dict(ci, orient='index')
     df = pd.concat([df, df_ci], axis=1)
     return df
 
 def remove_index_columns(df):
-    return df.drop(columns=[c for c in df.columns if c in ['level_0','index','Unnamed: 0']], inplace=True)
+    return df.drop(columns=[c for c in df.columns if c in ['level_0','index','Unnamed: 0']])
 
 
 def run(args):
@@ -178,7 +192,7 @@ def run(args):
 
             if config['use_poisson']:
                 verbose_print('Add Poisson intervals',config)
-                df = add_poisson(df)
+                df = add_poisson(config,df,s)
 
             df = remove_index_columns(df)
 

@@ -6,6 +6,9 @@ def compute_conf_interval(info_bases, mut_bases, alpha = 0.05):
     ci = {}
     i, ci['poisson_min'], ci['poisson_max'], ci['poisson_low'], ci['poisson_high'] = 0, np.zeros(len(info_bases)), np.zeros(len(info_bases)), np.zeros(len(info_bases)), np.zeros(len(info_bases))
     for cov, mut in zip(info_bases, mut_bases):
+        if cov == 0:
+            ci['poisson_min'][i], ci['poisson_max'][i],ci['poisson_low'][i], ci['poisson_high'][i] = np.nan, np.nan, np.nan, np.nan
+            continue 
         ci['poisson_min'][i], ci['poisson_max'][i] = 0.5*scipy.stats.chi2.ppf(alpha/2, df=2*mut)/cov, 0.5*scipy.stats.chi2.ppf(1-alpha/2, df=2*(mut+1))/cov
         if mut == 0:
             ci['poisson_min'][i] = 0
