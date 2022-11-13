@@ -1,20 +1,15 @@
 DOCKER_IMAGE := ydmt/dreem-ppai
 VERSION := $(shell git describe --always --dirty --long)
-default:
-	pip3 uninstall dreem-ppai -y
-	pip3 install .
 	
-init:
+default:
+	python3 -m venv venv
+	cd venv/bin && . activate && cd ../..
 	pip install -r requirements.txt
-	pip3 install .
-
-pin-dependencies:
-	pip install -U pip-tools
-	pip-compile requirements.in
+	pip install .
 
 upgrade-dependencies:
-	pip install -U pip pip-tools
-	pip-compile -U requirements.in > requirements.txt
+	rm -f requirements.txt
+	pip freeze > requirements.txt
 
 push_to_pypi:
 	rm -fr dist
