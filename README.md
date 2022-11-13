@@ -13,7 +13,7 @@ This repo takes the output of Scott Grote's DREEM and adds additional data such 
 
 ## Installation
 
-dreem-ppai is NOT YET #TODO available on PyPi:
+dreem-ppai is available on PyPi:
 
 ```
 pip install dreem-ppai

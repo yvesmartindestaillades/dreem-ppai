@@ -9,8 +9,12 @@ try:
     with open('/Users/ymdt/src/dreem-ppai/requirements.txt') as f:
         requirements = f.read().splitlines()
 except:
-    with open('../requirements.txt') as f:
-        requirements = f.read().splitlines()
+    try:
+        with open('../requirements.txt') as f:
+            requirements = f.read().splitlines()
+    except:
+        with open('requirements.txt') as f:
+            requirements = f.read().splitlines()
 
 PYTHON_VERSION = (3,10)
 
@@ -20,7 +24,7 @@ if sys.version_info < PYTHON_VERSION:
 
 setup(
    name='dreem-ppai',
-   version= '0.0.1',
+   version= '1.0.0',
    license="MIT",
    description='Add info to Scott Grote\'s DREEM',
    author='Yves Martin des Taillades',
@@ -42,10 +46,5 @@ setup(
    ],
    include_package_data=True,
    install_requires=requirements, #external packages as dependencies
-    entry_points = {
-        'console_scripts' : [
-            'dreem-ppai = dreem-ppai.run : main'
-            ]
-    },
-    url='https://github.com/yvesmartindestaillades/dreem-ppai'
+   url='https://github.com/yvesmartindestaillades/dreem-ppai'
 )
