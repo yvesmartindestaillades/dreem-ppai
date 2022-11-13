@@ -329,7 +329,9 @@ use:
 # RUN!
 
 ```
-dreem-ppai --config my_config.yml
+python3
+>>> from dreem-ppai import run
+>>> run.run(config='config.yaml')
 ```
 
 ## A few cool additional features
