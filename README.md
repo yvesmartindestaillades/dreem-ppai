@@ -53,19 +53,7 @@ python3 dreem-ppai/run.py
 # Run dreem-ppai
 ## Create a config file
 
-Run:
-
-```
-dreem-ppai --generate_templates .
-```
-
-Or download `root/template_config.yml`.
-
-Optional: rename your config file:
-
-```
-mv template_config.yml config.yml
-```
+Download `templates/config.yml`.
 
 ## Give DREEM output csv files
 ### Organize your csv files in your file explorer 
@@ -164,13 +152,9 @@ in_vivo:
     - cell_line # Cell line
 ```
 
-### Generate templates
+### Download a template
 
-Generate a csv template for `samples.csv` using:
-
-```
-dreem-ppai generate_templates [path]
-```
+Download `templates/samples.csv`.
 
 The template looks like this:
 
@@ -203,6 +187,9 @@ use:
 ```
 
 ## Add library.csv
+
+### Download a template 
+Download `templates/library.csv`.
 
 ### What's in library.csv
 
