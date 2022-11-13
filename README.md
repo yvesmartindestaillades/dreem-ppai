@@ -34,7 +34,7 @@ pip install .
 ### Test installation
 
 ```
-dreem-ppai --test
+dreem-ppai -c test/config.yml
 
 # Run dreem-ppai
 ## Fill in config.yml

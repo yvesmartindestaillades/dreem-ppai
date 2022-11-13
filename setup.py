@@ -20,9 +20,9 @@ if sys.version_info < PYTHON_VERSION:
 
 setup(
    name='dreem-ppai',
-   version= '1.1.9',
+   version= '0.0.1',
    license="MIT",
-   description='A wrapper for DREEM for the Herschlag lab',
+   description='Add info to Scott Grote\'s DREEM',
    author='Yves Martin des Taillades',
    author_email='yves@martin.yt',
    long_description= 'TODO',
@@ -32,12 +32,13 @@ setup(
    package_data={'': ['*.yml']},
    py_modules=[
          'dreem-ppai/sanity_check',
-         'dreem-ppai/run_dreem',
          'dreem-ppai/run',
          'dreem-ppai/util',
-         'dreem-ppai/template',
+         'dreem-ppai/templates',
+         'dreem-ppai/rnastructure',
          'dreem-ppai/get_info',
          'dreem-ppai/export',
+         'dreem-ppai/poisson',
    ],
    include_package_data=True,
    install_requires=requirements, #external packages as dependencies

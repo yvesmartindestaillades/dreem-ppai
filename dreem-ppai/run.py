@@ -105,7 +105,7 @@ def add_library(config, df):
                     for c in ['sequence']+[col for col in df.columns.tolist() if (col != 'num_of_mutations' and type(df[col].iloc[0]) == list)]:
                         row[c] = row[c][int(row['section_start']-1):int(row['section_end'])]
                         if isnan(row['section']):
-                            row['section'] = '{} - {}'.format(row['section_start'], row['section_end'])
+                            row['section'] = '{}-{}'.format(row['section_start'], row['section_end'])
                 new_df = pd.concat([new_df, pd.DataFrame(row).T])
         df = new_df.reset_index(drop=True)
         df['section_start'] = df['section_start'].apply(lambda x: int(x-1))
@@ -202,7 +202,7 @@ def run(args):
 
             if config['to_CSV']:
                 verbose_print(f'Dump {s} to CSV',config)
-                df.to_csv(config['path_output']+s+'.csv')
+                df.to_csv(config['path_output']+s+'.csv', index=True)
 
             if config['to_pickle']:
                 verbose_print(f'Dump {s} to pickle',config)

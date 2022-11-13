@@ -120,6 +120,8 @@ class RNAstructure(object): #TODO
                 continue
             this_sequence = mh.sequence
             for dms, dms_suf in {False:'', True:'_DMS'}.items():
+                if dms and min(mh.info_bases) == 0:
+                    continue
                 suffix = dms_suf+temperature_suf
                 self.make_files(f"{temp_prefix}{suffix}")
                 self.create_fasta_file(mh.construct, this_sequence)
