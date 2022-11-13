@@ -1,0 +1,102 @@
+
+
+# DREEM MODE: run DREEM on your samples
+# -------------------------------------
+# More information about hese arguments here: https://github.com/jyesselm/dreem#run
+run_dreem: True  # runs the DREEM Python module on your samples
+dreem_args:
+    overwrite: True      # Re-compute the bitvector if it already exists. Takes more time.
+    suffix_cmd: ''      # Add this to the end of DREEM's command line   
+
+# Add info mode: add the uncommented lines to your DREEM outputs files
+# --------------------------------------------------------------------
+add_info: False    # turns this mode one 
+add_info_args:
+    library: True       # Add the content of library.csv
+    samples: True       # Add the content of samples.csv 
+    rnastructure: True   # Add RNAstructure
+    poisson: True       # Add Poisson confidence interval
+
+# RNAstructure options
+# ---------------------
+rnastructure:
+    temperature: False           # Use samples.csv col 'temperature_k' as an input for RNAstructure
+    suffix_fold_cmd: ''          # Additional input to add to the RNAstructure 'Fold' command      
+    # for using DMS signal as an input in the argument 
+    dms: True                    # Add predictions using DMS
+    max_paired_mut_rate: 0.01    # below this value, 0% of the bases are unpaired
+    min_unpaired_mut_rate: 0.05  # above this value, 100% of the bases are unpaired
+    temperature: True            # Add predictions using temperature
+    roi: True                    # Add predictions using the ROI if there's a roi
+
+# Where you store your data
+# -------------------------
+# your data must be organized this way:
+#|- /[path_to_fastq_files]
+#     |- samples.csv
+#     |- library.csv
+#     |- ref.fasta
+#     |- [your_sample_1]_R1_001.fastq.gz
+#     |- [your_sample_1]_R2_001.fastq.gz
+#     |- [your_sample_2]_R1_001.fastq.gz
+#     |- [your_sample_2]_R2_001.fastq.gz
+#     |- [your_sample_3]_R1_001.fastq.gz
+#     |- [your_sample_3]_R2_001.fastq.gz
+#     |- ...
+
+path_to_fastq_files: /Users/ymdt/src/dreem-ppai/test/resources
+
+
+# Where to find/store your DREEM output files 
+# -------------------------------------------
+# There's a bunch of folders in output/. This option creates a folder such that:
+# /[path_to_fastq_files]
+#   |- [your_sample_1].p
+#   |- [your_sample_2].p
+#   |- [your_sample_3].p
+#   ...
+
+path_to_dreem_output_files: /Users/ymdt/src/dreem-ppai/output_DREEM_mh
+
+
+# Set to True if your files are under the format .p.gz
+# ----------------------------------------------------
+
+fastq_zipped: False
+
+
+# Indicate where is RNAstructure/exe on your computer
+# ---------------------------------------------------
+
+path_to_RNAstructure: /Users/ymdt/src/RNAstructure/exe
+
+
+# The samples that you want to process today
+# ------------------------------------------
+# These names must correspond to
+#     - the sample column in samples.csv
+#     - the name of your data folders
+# Example:
+# - [your_sample_1]
+# - [your_sample_2]
+# - [your_sample_3]
+#
+# Nota bene: obviously, the name of your data folders must match the sample column of samples.csv
+
+samples:
+- case_1
+- case_2
+
+# To JSON: export to JSON the pickle files
+# ----------------------------------------
+to_JSON: True
+path_to_json_files: /Users/ymdt/src/dreem-ppai/output_json
+
+# To CSV: export to CSV the pickle files
+# --------------------------------------
+to_CSV: True
+path_to_csv_files: /Users/ymdt/src/dreem-ppai/output_csv
+
+# Print more information during run time
+# --------------------------------------
+verbose: True
