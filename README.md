@@ -1,4 +1,4 @@
-# Welcome to the DREEM post processing add info module
+# Welcome to DREEM-PPAI (Post-Processing, Add Info)
 
 This repo takes the output of Scott Grote's DREEM and adds additional data such as:
 - per-sample information, such as the temperature or the cell line used.
@@ -8,12 +8,12 @@ This repo takes the output of Scott Grote's DREEM and adds additional data such 
 
 ## Requirements
 
-You need RNAstructure installed to run RNAstructure, otherwise deactivate this option in the config file.
-Python packages requirements are given on ``requirements.txt``.
+- [RNAstructure](https://rna.urmc.rochester.edu/RNAstructureWeb/) (otherwise deactivate this option in the config file).
+- Python packages described in ``requirements.txt``.
 
 ## Installation
 
-dreem-ppai is available on PyPi:
+dreem-ppai is NOT YET #TODO available on PyPi:
 
 ```
 pip install dreem-ppai
@@ -28,20 +28,44 @@ cd dreem-ppai
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
-pip install .
 ```
 
 ### Test installation
 
+Add RNAstructure path to `test/config.yml`:
+
 ```
-dreem-ppai -c test/config.yml
+gedit test/config.yml
+```
 
+Edit path:
+```
+# RNAstructure options
+# ---------------------
+rnastructure:
+    path:  /Users/ymdt/src/RNAstructure/exe #where is RNAstructure installed
+ ```
+
+Then run:
+```
+python3 dreem-ppai/run.py
+```
 # Run dreem-ppai
-## Fill in config.yml
+## Create a config file
 
-- Download the `template_config.yml` template at the root of this repo, or generate it with ``dreem-ppai --generate_templates``
-- You may rename your file `my_config.yml` or whatever sounds good to you, so that you don't overwrite it.
-- Use this file for the following instructions.
+Run:
+
+```
+dreem-ppai --generate_templates .
+```
+
+Or download `root/template_config.yml`.
+
+Optional: rename your config file:
+
+```
+mv template_config.yml config.yml
+```
 
 ## Give DREEM output csv files
 ### Organize your csv files in your file explorer 
